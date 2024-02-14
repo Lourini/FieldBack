@@ -9,7 +9,7 @@ import { Projet } from './projet.model'; // assuming Projet model exists
   providedIn: 'root'
 })
 export class ProjetService {
-  private baseUrl = 'http://localhost:3000/api'; // Your Node.js server address
+  private baseUrl = 'http://185.166.39.250:3000/api'; // Your Node.js server address
 
   constructor(private http: HttpClient) { }
 

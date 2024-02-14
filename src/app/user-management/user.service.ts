@@ -7,7 +7,7 @@ import { User } from './user.model';
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = 'http://localhost:3000/api'; // Assuming your API endpoints are under '/api'
+  private baseUrl = 'http://185.166.39.250:3000/api'; // Assuming your API endpoints are under '/api'
 
   constructor(private http: HttpClient) {}
 

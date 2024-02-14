@@ -7,7 +7,7 @@ import { OuvragesHydrauliques,OuvragesHydrauliquesData } from './ouvrageshydraul
   providedIn: 'root'
 })
 export class OuvrageshydrauliquesService {
-  private apiUrl = 'http://localhost:3000/api'; // Update with your API URL
+  private apiUrl = 'http://185.166.39.250:3000/api'; // Update with your API URL
 
   constructor(private http: HttpClient) { }
 

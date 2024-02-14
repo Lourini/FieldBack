@@ -7,7 +7,7 @@ import { Anomalie } from './anomalie.model';
   providedIn: 'root'
 })
 export class AnomalieService {
-  private apiUrl = 'http://localhost:3000/api'; // Update with your API URL
+  private apiUrl = 'http://185.166.39.250:3000/api'; // Update with your API URL
 
   constructor(private http: HttpClient) { }
 
