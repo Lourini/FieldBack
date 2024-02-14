@@ -1,0 +1,33 @@
+<div class="log">
+    <div class="img">
+      <img src="../../assets/Images/MicrosoftTeams-image.png">
+    </div>
+    <div class="login-content">
+      <form>
+        <img class="profile_1" src="../../assets/Images/profile.svg">
+        <img class="profile_2" src="../../assets/Images/MicrosoftTeams-image.png">
+        <h3 class="title mb-3">Se connecter à FieldBack</h3>
+        <div class="input-div one">
+          <div class="i">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="div">
+            <h5>Nom d'utilisateur</h5>
+            <input  #inputElement1 type="text" [(ngModel)]="username" name="username" class="input">
+          </div>
+        </div>
+        <div class="input-div pass">
+          <div class="i">
+            <i class="fas fa-lock"></i>
+          </div>
+          <div class="div">
+            <h5>Mot de passe</h5>
+            <input  #inputElement2 type="password" [(ngModel)]="password" name="password" class="input">
+          </div>
+        </div>
+        <a href="#">Mot de passe oublié?</a>
+        <input type="submit" (click)="login()" class="botton" value="connexion">
+      </form>
+    </div>
+  </div>
+
