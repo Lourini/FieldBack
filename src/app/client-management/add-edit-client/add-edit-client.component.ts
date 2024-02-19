@@ -12,9 +12,8 @@ export class AddEditClientComponent {
   public isReadonly: boolean = false;
   formSubmitted: boolean = false;
   editMode: boolean = false;
-  clientId: string | null = null;
-
-
+  clientId: string  | null = null;
+  ClientId ="";
   client: Client = {
     numClient: '',
     denomination: '',
@@ -63,6 +62,7 @@ typeOfConstructions : TypeOfConstruction[] = [{
   ngOnInit(): void {
     this.clientId = this.route.snapshot.paramMap.get('id');
     if (this.clientId) {
+      this.ClientId = this.clientId;
       this.editMode = true;
       this.loadClient();
     }
@@ -103,7 +103,6 @@ typeOfConstructions : TypeOfConstruction[] = [{
         this.zoneEtude = response.zoneEtude;
         this.typeOfConstructions = response.typeOfConstruction;
         this.router.navigate(['/clients/edit', response.client.id]);
-        this.editMode = true;
       },
       error => {
         console.log('Error adding client:', error);

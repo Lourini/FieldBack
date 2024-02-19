@@ -13,6 +13,8 @@ import { ProjetListComponent } from './projet-management/projet-list/projet-list
 import { CodeStandardComponent } from './code-standard/code-standard.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './login/auth.guard';
+import { TaskListComponent } from './tasks-management/task-list/task-list.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { AuthGuard } from './login/auth.guard';
     AddEditProjetComponent,
     ProjetListComponent,
     CodeStandardComponent,
-    LoginComponent
+    LoginComponent,
+    TaskListComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,7 @@ import { AuthGuard } from './login/auth.guard';
     ReactiveFormsModule,
     
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

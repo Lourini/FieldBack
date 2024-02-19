@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProjetService } from '../projet.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Projet } from '../projet.model';
 import { Client } from 'src/app/client-management/client.model';
 import { ClientService } from 'src/app/client-management/client.service';
@@ -13,6 +13,9 @@ import { OuvragesHydrauliques, OuvragesHydrauliquesData } from '../ouvrageshydra
 import { OuvrageshydrauliquesService } from '../ouvrageshydrauliques.service';
 import { DonnesTroconsService } from '../donnes-trocons.service';
 import { DonneTrocons } from '../donne-trocons.model';
+import { AmenagementsProposes } from '../ammenagements.model';
+import { AmenagementsService } from '../ammenagements.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-projet',
@@ -42,11 +45,12 @@ export class AddEditProjetComponent {
     clientId: '',
     ChefOfprojet: '',
   };
-  uploadImage = '';
+  dateCreation : string | null ='';
   clients: Client[] = [];
   users: any[] = [];
   editMode!: boolean;
   popupImage = '';
+  uploadImage = '';
 
   //// Anomalie Variable ////
   Anomalies: Anomalie[] = [];
@@ -72,9 +76,18 @@ export class AddEditProjetComponent {
   titlemodelDonnesTrocon = '';
   buttonTypeDonnesTrocon!: boolean;
 
-  constructor(private route: ActivatedRoute, private projectService: ProjetService, private clientService: ClientService,
+  ///// AmenagementsProposes ///////
+  AmenagementsProposes : AmenagementsProposes[] =[];
+  currentAmenagementsProposes : AmenagementsProposes = {projetId : this.projetId};
+  CodesAmenagementsProposes : CodeStandard[] = [];
+  titlemodelAmenagementsPropose = '';
+  buttonTypeAmenagementsPropose!: boolean;
+  typeAmmenagement !: boolean;
+
+  constructor(private router : Router,private route: ActivatedRoute, private projectService: ProjetService, private clientService: ClientService,
     private userService: UserService, private anomalieService: AnomalieService, private codeStandardService: CodeStandardService,
-    private ouvrageHydrauliquesService: OuvrageshydrauliquesService, private donnesTroconService: DonnesTroconsService) { }
+    private ouvrageHydrauliquesService: OuvrageshydrauliquesService, private donnesTroconService: DonnesTroconsService,
+    private ammenagementsService : AmenagementsService,private datePipe : DatePipe) { }
 
   ngOnInit(): void {
     this.projetId = this.route.snapshot.params['id']; // Retrieve project ID from route parameters
@@ -85,11 +98,9 @@ export class AddEditProjetComponent {
       // If project ID is available, fetch the project details and set isReadonly to true (editing mode)
       this.projectService.getProjetById(this.projetId).subscribe(response => {
         this.projet = response;
-        //   if(this.projet.planSituation){
-        //   const bufferData = new Uint8Array(this.projet.planSituation.data);
-        //   const dataArray: number[] = Array.from(bufferData);
-        //   const base64ImageData = btoa(String.fromCharCode.apply(null, dataArray));
-        //   this.uploadImage = 'data:image/png;base64,' + base64ImageData;
+        this.dateCreation = this.datePipe.transform(this.projet.createdAt, 'yyyy-MM-dd HH:mm:ss');
+        // if (this.projet.planSituation) {
+        //   this.convertBlobToBase64(this.projet.planSituation);
         // }
       }, error => {
         console.log(error);
@@ -98,6 +109,7 @@ export class AddEditProjetComponent {
       this.getCodeStandardAnomalie();
       this.getOuvragesHydrauliques();
       this.getDonnesTrocons();
+      this.getAmenagements();
     }
   }
 
@@ -109,6 +121,22 @@ export class AddEditProjetComponent {
       console.log(error);
     })
   }
+
+  // convertBlobToBase64(bufferData: any) {
+  //   // Convert buffer to Uint8Array
+  //   const uintArray = new Uint8Array(bufferData.data);
+
+  //   // Convert Uint8Array to Blob
+  //   const blob = new Blob([uintArray], { type: 'image/jpeg' }); // Adjust the MIME type accordingly
+
+  //   // Convert Blob to Base64
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     this.uploadImage = reader.result as string;
+  //   };
+  //   reader.readAsDataURL(blob);
+  // }
+
   private loadUsers() {
     this.userService.getUsers().subscribe(response => {
       this.users = response;
@@ -132,6 +160,7 @@ export class AddEditProjetComponent {
       // If adding a new project, call the service method to add the project
       this.projectService.createProjet(this.projet).subscribe(response => {
         this.projet = response;
+        this.router.navigate(['projects/edit/',this.projet.id]);
         // if (this.projet.planSituation)
         //   this.uploadImage = URL.createObjectURL(this.projet.planSituation);
       }, error => {
@@ -139,13 +168,20 @@ export class AddEditProjetComponent {
       });
     }
   }
+  onSelectClient(){
+    const client = this.clients.find(e=>e.id===this.projet.clientId);
+    this.projet.contactPrincipale = client?.prenom_contact_principal+' '+client?.nom_contact_principal;
+    this.projet.adresseMail = client?.adresse_email;
+    this.projet.numeroTelephone = client?.telephone;
+    this.projet.adresse = client?.adresse;
+  }
   handleImageUpload(event: any) {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.projet.planSituation = new Blob([e.target.result]);
-        this.uploadImage = URL.createObjectURL(this.projet.planSituation);
+        this.projet.planSituation = e.target.result
+        this.uploadImage = e.target.result;
       };
       reader.readAsDataURL(file);
     }
@@ -282,7 +318,7 @@ export class AddEditProjetComponent {
       var id = this.currentExistingHydraulic.id
       this.currentExistingHydraulic.ouvragesHydrauliques_etats = this.currentExistingHydraulic.etatIds.map(
         function (e: string) {
-          return { "codeStandardId": e,"ouvragesHydrauliquesId" : id }
+          return { "codeStandardId": e, "ouvragesHydrauliquesId": id }
         });
       this.ouvrageHydrauliquesService.updateOuvragesHydrauliques(this.currentExistingHydraulic.id, this.currentExistingHydraulic).subscribe(resp => {
         this.getOuvragesHydrauliques();
@@ -336,5 +372,69 @@ export class AddEditProjetComponent {
         console.log(error);
       })
   }
+
+  ////////////////////// Amménagement Proposées ///////////////
+
+  private getAmenagements(){
+    this.ammenagementsService.getAmenagementsProposesByProjectId(this.projetId).subscribe(resp=>{
+      this.AmenagementsProposes = resp;
+    },error=>{
+      console.log("error amenagement " , error);
+    })
+  }
+  private getAmenagementsProposes(codestandard : string){
+    this.codeStandardService.getCodeStandardByType(codestandard).subscribe(resp=>{
+      this.CodesAmenagementsProposes = resp;
+    },error=>{
+      console.log(error);
+    })
+  }
+  onOpenModalToAddAmenagements() {
+    this.titlemodelAmenagementsPropose = 'Ajouter';
+    this.buttonTypeAmenagementsPropose = true;
+    this.currentAmenagementsProposes = {projetId : this.projetId};
+  }
+  onOpenMdalToUpdateAmenagements(currentAmenagements: any) {
+    this.titlemodelAmenagementsPropose = 'Modifier';
+    this.buttonTypeAmenagementsPropose = false;
+    this.currentAmenagementsProposes = currentAmenagements;
+  }
+  onSelectChangeAmmenagements(){
+    if(this.currentAmenagementsProposes.type==="Ouvrage hydraulique"){
+      this.typeAmmenagement=true;
+      this.getOuvragesHydrauliques();
+      this.getAmenagementsProposes("Aménagement proposé – Ouvrage hydraulique");
+    }else if(this.currentAmenagementsProposes.type==="Corps de la chaussée"){
+      this.typeAmmenagement=false;
+      this.getAnomalies();
+      this.getAmenagementsProposes("Aménagement proposé – Corps de la chaussée");
+    }
+  }
+
+  onAddAmmenagements(){
+    this.ammenagementsService.createAmenagementPropose(this.currentAmenagementsProposes).subscribe(resp=>{
+        this.getAmenagements();
+    },error=>{
+      console.log(error);
+    })
+  }
+  OnDeleteAmmenagements(id : string | undefined){
+    if(id)
+    this.ammenagementsService.deleteAmenagementPropose(id).subscribe(resp=>{
+      this.getAmenagements();
+    },error=>{
+      console.log(error);
+    })
+  }
+
+  onUpdateAmenagements(){
+    if(this.currentAmenagementsProposes.id)
+    this.ammenagementsService.updateAmenagementPropose(this.currentAmenagementsProposes.id,this.currentAmenagementsProposes).subscribe(resp=>{
+      this.getAmenagements();
+    },error=>{
+      console.log(error);
+    })
+  }
+
 
 }

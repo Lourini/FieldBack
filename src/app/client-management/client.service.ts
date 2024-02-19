@@ -7,6 +7,7 @@ import { Client,ZoneEtude,TypeOfConstruction } from './client.model';
   providedIn: 'root'
 })
 export class ClientService {
+  // private baseUrl = 'http://localhost:3000/api';
   private baseUrl = 'http://185.166.39.250:3000/api'; // Adjust the base URL according to your API
 
   constructor(private http: HttpClient) {}

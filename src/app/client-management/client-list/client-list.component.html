@@ -25,7 +25,7 @@
                         <td>{{client.province}}</td>
                         <td>{{client.ville}}</td>
                         <td><button class="btn custom-button btn-sm mr-1 mb-1"
-                                ><i class="fas fa-pencil-alt" (click)="navigateToEditClient(client.id)"></i> </button>
+                                (click)="navigateToEditClient(client.id)"><i class="fas fa-pencil-alt"></i> </button>
                             <button class="btn custom-button btn-sm mb-1" (click)="deleteClient(client.id)"><i
                                     class="fas fa-trash"></i> </button>
                         </td>

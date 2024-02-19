@@ -11,7 +11,6 @@ import { AuthService } from './login/auth.service';
 export class AppComponent {
 
 
-
   constructor(private el: ElementRef, private renderer: Renderer2, private router: Router, private route: ActivatedRoute,private authService : AuthService) { }
 
   ngOnInit(){

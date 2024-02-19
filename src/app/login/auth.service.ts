@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
+// const API = 'http://localhost:3000/api/login';
 const API = 'http://185.166.39.250:3000/api/login';
 
 @Injectable({

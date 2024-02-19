@@ -1,0 +1,200 @@
+<div class="float-right mt-2">
+    <button class="btn custom-button btn-sm mb-2 mr-2"
+    (click)="onOpenModalAddTask()" data-toggle="modal" data-target="#modelId"
+    [disabled]="this.projetId===undefined || this.projetId==='' || this.projetId===null">
+    <i class="fas fa-plus"></i> </button>
+</div>
+<div class="table-responsive mt-3">
+    <table class="table table-sm table-hover">
+        <thead class="thead-inverse">
+            <tr>
+                <th widht="5%">N°</th>
+                <th>Titre</th>
+                <th>Créée par</th>
+                <th>Assignée à</th>
+                <th>Statut</th>
+                <th widht="8%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let task of tasks">
+                <td>{{task.numeroTache}}</td>
+                <td>{{task.descriptionCourte}}</td>
+                <td>{{task?.createdBy?.firstname}} {{task.createdBy?.lastname}}</td>
+                <td>{{task.assignedTo?.firstname}} {{task.assignedTo?.lastname}}</td>
+                <td>{{task.statut}}</td>
+                <td><button class="btn custom-button btn-sm mr-1 mb-1" data-toggle="modal" data-target="#modelId"
+                        (click)="onOpenModalUpdateTask(task)"><i class="fas fa-pencil-alt"></i> </button>
+                    <button class="btn custom-button btn-sm mb-1" (click)="onDeleteTask(task.id)"><i class="fas fa-trash"
+                            ></i> </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-80" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{titleModel}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="myTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="Tâche-tab" data-toggle="tab" href="#Tâche" role="tab"
+                            aria-controls="Tâche" aria-selected="true">Tâche</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="Actions-tab" data-toggle="tab" href="#Actions" role="tab"
+                            aria-controls="Actions" aria-selected="false">Actions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="Associe-tab" data-toggle="tab" href="#AssocieTask" role="tab"
+                            aria-controls="Associe" aria-selected="false">Associé</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabsContent">
+                    <div class="tab-pane fade show active" id="Tâche" role="tabpanel" aria-labelledby="Tâche-tab">
+                        <h5 class="mt-3">
+                            <a data-toggle="collapse" href="#InformationsTask" role="button" aria-expanded="false"
+                                aria-controls="Informations">
+                                Générale
+                            </a>
+                        </h5>
+                        <div class="collapse show" id="InformationsTask">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="row col-md-6">
+                                        <div class="form-group col-md-12">
+                                            <label for="numTache">N° Tâche</label>
+                                            <input [(ngModel)]="currentTask.numeroTache" type="text"
+                                                class="form-control" id="numTache" name="NumTache" readonly>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="titre">Titre</label>
+                                            <input [(ngModel)]="currentTask.descriptionCourte" type="text"
+                                                class="form-control" id="titre" name="titre" maxlength="20">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="description">Description </label>
+                                            <textarea [(ngModel)]="currentTask.descriptionLongue" class="form-control"
+                                                id="description" name="Description" rows="10"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row col-md-6">
+                                        <div class="form-group col-md-12">
+                                            <label for="numProjet">N° Projet</label>
+                                            <select (change)="onSelectChange()" type="text" name="numProjet"
+                                                class="form-control" id="numProjet" [(ngModel)]="currentTask.projetId">
+                                                <option value=""></option>
+                                                <option *ngFor="let projet of projets" value="{{projet.id}}">
+                                                    {{projet.titre}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="numAnomalie">Anomalie</label>
+                                            <select (change)="onselectAnomalie()" type="text" name="numAnomalie" class="form-control" id="numAnomalie"
+                                                [(ngModel)]="currentTask.anomalieId"
+                                                [disabled]="this.currentTask.ouvrageId!==null ||  this.currentTask.amenagementId!==null">
+                                                <option value=""></option>
+                                                <option *ngFor="let anomalie of anomalies" value="{{anomalie.id}}">
+                                                    {{anomalie.etatAnomalie}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="numOuvrage">Ouvrage hydraulique existant</label>
+                                            <select (change)="onselectOuvrages()" type="text" name="numOuvrage" [(ngModel)]="currentTask.ouvrageId"
+                                                class="form-control" id="numOuvrage"
+                                                [disabled]="this.currentTask.anomalieId!==null || this.currentTask.amenagementId!==null">
+                                                <option value=""></option>
+                                                <option *ngFor="let ouvrage of ouvrages" value="{{ouvrage.id}}">
+                                                    {{ouvrage.type.description}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="numAmenagement">Aménagement proposé</label>
+                                            <select (change)="onselectAmenagements()" type="text" name="numAmenagement"
+                                                [(ngModel)]="currentTask.amenagementId" class="form-control"
+                                                id="numAmenagement"
+                                                [disabled]="this.currentTask.anomalieId!==null || this.currentTask.ouvrageId!==null">
+                                                <option value=""></option>
+                                                <option *ngFor="let amenagement of ammenagements"
+                                                    value="{{amenagement.id}}">
+                                                    {{amenagement.amenagement?.description}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="statut">Statut</label>
+                                            <select name="Statut" [(ngModel)]="currentTask.statut" class="form-control"
+                                                id="statut">
+                                                <option value="A faire">A faire</option>
+                                                <option value="traitée">traitée</option>
+                                                <option value="En cours">En cours</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="mt-3">
+                            <a data-toggle="collapse" href="#Assignation" role="button" aria-expanded="false"
+                                aria-controls="Assignation">
+                                Assignation
+                            </a>
+                        </h5>
+                        <div class="collapse show" id="Assignation">
+                            <div class="card card-body mb-3">
+                                <div class="row">
+                                    <div class="row col-md-7">
+                                        <div class="form-group col-md-12">
+                                            <label for="createur">Créée par</label>
+                                            <select type="text" [(ngModel)]="currentTask.creeePar" name="createur"
+                                                disabled class="form-control form-selct" id="createur">
+                                                <option *ngFor="let user of Users" value="{{user.id}}">{{user.username}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="dateCreation">Créée le</label>
+                                            <input type="text" [value]="createdDate"  name="dateCreation"
+                                                class="form-control" id="dateCreation" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row col-md-5">
+                                        <div class="form-group col-md-12">
+                                            <label for="assignee">Assignée à</label>
+                                            <select type="text" [(ngModel)]="currentTask.assigneeA" name="assignee"
+                                                class="form-control form-selct" id="assignee">
+                                                <option *ngFor="let user of Users" value="{{user.id}}">{{user.username}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="dateAssignation">Assignée le</label>
+                                            <input type="text" [value]="updatedDate"
+                                                name="dateAssignation"  class="form-control" id="dateAssignation"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="buttonType" (click)="onAddTask()" type="button" class="btn btn-primary"
+                    data-dismiss="modal">Ajouter</button>
+                <button *ngIf="!buttonType" (click)="onUpdateTask()" type="button" class="btn btn-primary"
+                    data-dismiss="modal">Modifier</button>
+            </div>
+        </div>
+    </div>
+</div>

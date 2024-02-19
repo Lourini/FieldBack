@@ -7,6 +7,7 @@ import { CodeStandard } from './codestandard.model';
   providedIn: 'root'
 })
 export class CodeStandardService {
+  // private apiUrl = 'http://localhost:3000/api';
   private apiUrl = 'http://185.166.39.250:3000/api'; // Update with your API URL
 
   constructor(private http: HttpClient) { }

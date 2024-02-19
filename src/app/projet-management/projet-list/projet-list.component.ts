@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Projet } from '../projet.model';
 import { ProjetService } from '../projet.service';
 import { UserService } from 'src/app/user-management/user.service';
+import { Client } from 'src/app/client-management/client.model';
+import { ClientService } from 'src/app/client-management/client.service';
 
 @Component({
   selector: 'app-projet-list',
@@ -10,18 +12,38 @@ import { UserService } from 'src/app/user-management/user.service';
   styleUrls: ['./projet-list.component.scss']
 })
 export class ProjetListComponent implements OnInit {
+
+  @Input() clientId = '';
+
   Projets: Projet[] = [];
   users: any[] = [];
+  clients : Client[] = [];
 
-  constructor(private router: Router, private projetService: ProjetService,private userService: UserService) {}
+  constructor(private router: Router, private projetService: ProjetService,private userService: UserService,
+      private clientService : ClientService) {}
 
   ngOnInit() {
-    this.loadProjets();
+    if(this.clientId!=='' && this.clientId!==null && this.clientId!==undefined){
+      this.loadProjetsByClients()
+    }else{
+      this.loadProjets();
+    }
     this.loadUsers();
+    this.loadClients();
   }
 
   private loadProjets() {
     this.projetService.getProjets().subscribe(
+      response => {
+        this.Projets = response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+  private loadProjetsByClients(){
+    this.projetService.getProjetsByClientId(this.clientId).subscribe(
       response => {
         this.Projets = response;
       },
@@ -38,12 +60,20 @@ export class ProjetListComponent implements OnInit {
       console.log(error);
     })
   }
+  private loadClients() {
+    this.clientService.getClients().subscribe(resp=>{
+      this.clients = resp;
+    })
+  }
   formatUser(id: string | undefined): string | null | undefined {
     return this.users.find((e: any) => e.id === id)?.username;
   }
+  formatclient(id: string | undefined): string | null | undefined {
+    return this.clients.find((e: any) => e.id === id)?.denomination;
+  }
 
   onDelete(projetId: string | undefined) {
-    if (confirm('Are you sure you want to delete this project?') && projetId!==undefined) {
+    if (confirm('Êtes-vous sûr(e) de vouloir supprimer ce projet ?') && projetId!==undefined) {
       this.projetService.deleteProjet(projetId).subscribe(
         () => {
           // Remove the deleted project from the list
