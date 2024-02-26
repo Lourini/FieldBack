@@ -1,0 +1,70 @@
+<div id="Content" class="Content" *ngIf="!clientId">
+    <div class="container mt-5">
+        <h2>List des projets</h2>
+        <div class="float-right">
+            <button class="btn custom-button btn-sm mb-2" (click)="navigateToAddprojet()"><i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table id="ListTable"
+                class="table table-sm table-bordered table-inverse table-hover table-sm table-striped">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Projet N°</th>
+                        <th>Titre</th>
+                        <th>Client</th>
+                        <th>Chef de projet</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let projet of Projets">
+                        <td>{{ projet.nuProjet }}</td>
+                        <td>{{ projet.titre}}</td>
+                        <td>{{ formatclient(projet.clientId) }}</td>
+                        <td>{{ formatUser(projet.ChefOfprojet) }}</td>
+                        <td><button class="btn custom-button btn-sm mr-1 mb-1"
+                                (click)="navigateToEditProjet(projet.id)"><i class="fas fa-pencil-alt"></i> </button>
+                            <button class="btn custom-button btn-sm mb-1" (click)="onDelete(projet.id)"><i
+                                    class="fas fa-trash"></i> </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="clientId">
+    <div class="float-right">
+        <button class="btn custom-button btn-sm mb-2" (click)="navigateToAddprojet()"><i class="fas fa-plus"></i>
+        </button>
+    </div>
+    <div class="table-responsive">
+        <table id="ListTable" class="table table-sm table-bordered table-inverse table-hover table-sm table-striped">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>Projet N°</th>
+                    <th>Titre</th>
+                    <th>Client</th>
+                    <th>Chef de projet</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let projet of Projets">
+                    <td>{{ projet.nuProjet }}</td>
+                    <td>{{ projet.titre}}</td>
+                    <td>{{ formatclient(projet.clientId) }}</td>
+                    <td>{{ formatUser(projet.ChefOfprojet) }}</td>
+                    <td><button class="btn custom-button btn-sm mr-1 mb-1"><i class="fas fa-pencil-alt"
+                                (click)="navigateToEditProjet(projet.id)"></i> </button>
+                        <button class="btn custom-button btn-sm mb-1" (click)="onDelete(projet.id)"><i
+                                class="fas fa-trash"></i> </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

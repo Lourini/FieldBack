@@ -1,0 +1,627 @@
+<div id="Content" class="Content">
+    <div class="container mt-5">
+        <ul class="nav nav-tabs" id="myTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="Projet-tab" data-toggle="tab" href="#Projet" role="tab"
+                    aria-controls="Projet" aria-selected="true">Projet</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="Task-tab" data-toggle="tab" href="#Task" role="tab" aria-controls="Task"
+                    aria-selected="false">Tâches</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="Calendar-tab" data-toggle="tab"  role="tab" href="#Calendar"
+                    aria-controls="Calendar" (click)="onNavigateToCalendar()"  aria-selected="false">Calendrier</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="Associe-tab" data-toggle="tab" href="#Associe" role="tab"
+                    aria-controls="Associe" aria-selected="false">Associé</a>
+            </li>
+           
+        </ul>
+
+        <div class="tab-content" id="myTabsContent">
+            <div class="tab-pane fade show active" id="Projet" role="tabpanel" aria-labelledby="Projet-tab">
+                <div class="col-md-12">
+                    <button (click)="saveProject()" *ngIf="editMode"
+                        class="float-right btn custom-button btn-sm mt-2 mb-2"><i
+                            class="fas fa-pencil-alt crayon-icon"></i></button>
+                    <button (click)="saveProject()" *ngIf="!editMode"
+                        class="float-right btn custom-button btn-sm mt-2 mb-2"><i class="fas fa-plus"></i></button>
+                </div>
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#Informations" role="button" aria-expanded="false"
+                        aria-controls="Informations">
+                        Générale
+                    </a>
+                </h5>
+                <div class="collapse show" id="Informations">
+                    <div class="card card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="projectNumber">N° de projet</label>
+                                    <input type="text" class="form-control" name="Num" [disabled]="isReadonly"
+                                        [(ngModel)]="projet.nuProjet" id="projectNumber">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Titre">Titre</label>
+                                    <input type="text" class="form-control" name="Titre" [disabled]="isReadonly"
+                                        [(ngModel)]="projet.titre" id="Titre">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="projectDescription">Description</label>
+                                    <textarea class="form-control" name="Description" [disabled]="isReadonly"
+                                        [(ngModel)]="projet.description" id="projectDescription" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="client">Client</label>
+                                    <select (change)="onSelectClient()" class="form-control" id="client" [disabled]="isReadonly"
+                                        [(ngModel)]="projet.clientId">
+                                        <!-- Option to select a client from a dropdown -->
+                                        <option *ngFor="let client of clients" [value]="client.id">{{
+                                            client.denomination }}</option>
+                                        <!-- Add more options as needed -->
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="rfpNumber">N° Appel offre</label>
+                                    <input [(ngModel)]="projet.numeroAppelOffre"  type="text" class="form-control" id="rfpNumber">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="projectManager">Chef de projet</label>
+                                    <select [disabled]="isReadonly" type="text" name="ChefOfProject"
+                                        [(ngModel)]="projet.ChefOfprojet" class="form-control" id="projectManager">
+                                        <!-- Option to select a client from a dropdown -->
+                                        <option *ngFor="let user of users" [value]="user.id">{{
+                                            user.firstname }} {{user.lastname}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="projectType">Type de projet</label>
+                                    <select [disabled]="isReadonly" [(ngModel)]="projet.typeProjet" class="form-control"
+                                        id="projectType">
+                                        <option value="Génie de la Construction">Génie de la Construction</option>
+                                        <option value="Génie Environnemental">Génie Environnemental</option>
+                                        <option value="Génie Ferroviaire">Génie Ferroviaire</option>
+                                        <option value="Génie Geotechnique">Génie Géotechnique</option>
+                                        <option value="Génie Hydraulique">Génie Hydraulique</option>
+                                        <option value="Génie Maritime">Génie Maritime</option>
+                                        <option value="Génie des Ponts">Génie des Ponts</option>
+                                        <option value="Génie Routier">Génie Routier</option>
+                                        <option value="Génie Sismique">Génie Sismique</option>
+                                        <option value="Génie Structures">Génie des Structures</option>
+                                        <option value="Génie Urbain">Génie Urbain</option>
+                                        <!-- Add more options as needed -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="linear">Linéaire (Km2)</label>
+                                    <input [disabled]="isReadonly" [(ngModel)]="projet.lineaire" type="text"
+                                        class="form-control" id="linear">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="startPoint">Point de départ</label>
+                                    <input [disabled]="isReadonly" [(ngModel)]="projet.pointDepart" type="text"
+                                        class="form-control" id="startPoint">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="endPoint">Point d'arrivée</label>
+                                    <input [disabled]="isReadonly" [(ngModel)]="projet.pointArrivee" type="text"
+                                        class="form-control" id="endPoint">
+                                </div>
+                                <div class="form-group">
+                                    <label for="situationPlan">Plan de situation (Image)</label>
+                                    <input (change)="handleImageUpload($event)" disabled type="file"
+                                        class="form-control-file" id="situationPlan">
+                                </div>
+                                <div *ngIf="false" class="gallery">
+                                    <div class="thumbnail" (click)="openPopup()">
+                                        <img width="250px" height="200px" [src]="projet.planSituation"
+                                            alt="Uploaded Image">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#Durée" role="button" aria-expanded="false" aria-controls="Durée">
+                        Durée
+                    </a>
+                </h5>
+                <div class="collapse show" id="Durée">
+                    <div class="card card-body">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="startDate">Date début</label>
+                                <input [disabled]="isReadonly" [(ngModel)]="projet.dateDebut" type="date"
+                                    class="form-control" id="startDate">
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="endDate">Date fin</label>
+                                <input [disabled]="isReadonly" [(ngModel)]="projet.dateFin" type="date"
+                                    class="form-control" id="endDate">
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="creationDate">Date de création</label>
+                                <input type="text" [value]="dateCreation" class="form-control" id="creationDate"
+                                    disabled>
+                                <!-- The value should be set dynamically based on the current date using server-side scripting -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#Communication" role="button" aria-expanded="false"
+                        aria-controls="Communication">
+                        Communication
+                    </a>
+                </h5>
+                <div class="collapse show" id="Communication">
+                    <div class="card card-body mb-3">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="mainContact">Contact principal</label>
+                                <input [disabled]="isReadonly" type="text" class="form-control"
+                                    [(ngModel)]="projet.contactPrincipale" id="mainContact">
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="email">Adresse mail</label>
+                                <input [disabled]="isReadonly" type="email" [(ngModel)]="projet.adresseMail"
+                                    class="form-control" id="email">
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="phoneNumber">N° de téléphone</label>
+                                <input [disabled]="isReadonly" type="tel" [(ngModel)]="projet.numeroTelephone"
+                                    class="form-control" id="phoneNumber">
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="address">Adresse</label>
+                                <textarea [disabled]="isReadonly" [(ngModel)]="projet.adresse" class="form-control"
+                                    id="address" rows="2"></textarea>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="communicationMode">Mode de communication préféré</label>
+                                <select [disabled]="isReadonly" [(ngModel)]="projet.modeCommunicationPrefere"
+                                    class="form-control" id="communicationMode">
+                                    <option value="Mail">Mail</option>
+                                    <option value="Phone">Téléphone</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="Task" role="tabpanel" aria-labelledby="Task-tab">
+                <app-task-list [projetId]="projetId"></app-task-list>
+            </div>
+            <!-- <div class="tab-pane fade" id="Calendar" role="tabpanel" aria-labelledby="Calendar-tab">
+                <div class="width-calendar">
+                    <router-outlet></router-outlet>
+                </div>
+
+            </div> -->
+            <div class="tab-pane fade show" id="Associe" role="tabpanel" aria-labelledby="Associe-tab">
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#Anomalies" role="button" aria-expanded="false"
+                        aria-controls="Anomalies">
+                        Anomalies
+                    </a>
+                </h5>
+                <div class="collapse show" id="Anomalies">
+                    <div class="float-right">
+                        <button class="btn custom-button btn-sm mb-2" data-toggle="modal" data-target="#addAnomalie"
+                            (click)="onOpenModalToAddAnomalie()"
+                            [disabled]="this.projetId===undefined || this.projetId==='' || this.projetId===null"><i
+                                class="fas fa-plus"></i> </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th width="30%">Type Anomalie</th>
+                                    <th>Etat Anomalie</th>
+                                    <th width="8%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let anomalie of Anomalies">
+                                    <td>{{formatTypeAnomalie(anomalie.typeAnomalieId)}}</td>
+                                    <td>{{anomalie.etatAnomalie}}</td>
+                                    <td> <button class="btn custom-button btn-sm mb-2 mr-2" data-toggle="modal"
+                                            data-target="#addAnomalie" (click)="onOpenMdalToUpdateAnomalie(anomalie)"><i
+                                                class="fas fa-pencil-alt"></i> </button>
+                                        <button class="btn custom-button btn-sm mb-2" (click)="onDelete(anomalie.id)"><i
+                                                class="fas fa-trash"></i> </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#ouvrageshydrauliques" role="button" aria-expanded="false"
+                        aria-controls="ouvrageshydrauliques">
+                        Ouvrages hydrauliques existants
+                    </a>
+                </h5>
+                <div class="collapse show" id="ouvrageshydrauliques">
+                    <div class="float-right">
+                        <button class="btn custom-button btn-sm mb-2" data-toggle="modal"
+                            data-target="#OuvragesHydrauliques" (click)="onOpenModalToAddExistingHydraulic()"
+                            [disabled]="this.projetId===undefined || this.projetId==='' || this.projetId===null"><i
+                                class="fas fa-plus"></i> </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Type</th>
+                                    <th>Cordonnées X</th>
+                                    <th>Cordonnées Y</th>
+                                    <th>Etat</th>
+                                    <th width="8%"></th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let ouvrage of existingHydraulics;let index = index">
+                                    <td>{{index+1}}</td>
+                                    <td>{{ouvrage.type.description}}</td>
+                                    <td>{{ouvrage.coordonneesX}}</td>
+                                    <td>{{ouvrage.coordonneesY}}</td>
+                                    <td>
+                                        <ul>
+                                            <li *ngFor="let etat of ouvrage.ouvragesHydrauliques_etats">
+                                                {{etat.codeStandard.description}}</li>
+                                        </ul>
+                                    </td>
+                                    <td><button class="btn custom-button btn-sm mb-2 mr-2" data-toggle="modal"
+                                            data-target="#OuvragesHydrauliques"
+                                            (click)="onOpenMdalToUpdateExistingHydraulic(ouvrage)"><i
+                                                class="fas fa-pencil-alt"></i> </button>
+                                        <button class="btn custom-button btn-sm mb-2"
+                                            (click)="onDeleteExistingHydraulic(ouvrage.id)"><i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#DonneTroçons" role="button" aria-expanded="false"
+                        aria-controls="DonneTroçons">
+                        Données de Troçons
+                    </a>
+                </h5>
+                <div class="collapse show" id="DonneTroçons">
+                    <div class="float-right">
+                        <button class="btn custom-button btn-sm mb-2" data-toggle="modal" data-target="#DonneeTroçons"
+                            (click)="onOpenModalToAddDonnesTrocons()"
+                            [disabled]="this.projetId===undefined || this.projetId==='' || this.projetId===null"><i class="fas fa-plus"></i> </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-inverse text-center">
+                                <tr>
+                                    <th>Point de départ</th>
+                                    <th>Point d'arrivée</th>
+                                    <th>Linéiare</th>
+                                    <th>Largeur</th>
+                                    <th>GNB à projeter</th>
+                                    <th>GNF à projeter</th>
+                                    <th class="Actions"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center" *ngFor="let donnees of DonnesTrocons">
+                                    <td>{{donnees.pointDepart}}</td>
+                                    <td>{{donnees.pointArrivee}}</td>
+                                    <td>{{donnees.lineaire}}m</td>
+                                    <td>{{donnees.largeur}}m</td>
+                                    <td>{{donnees.gnbProjet}}m³</td>
+                                    <td>{{donnees.gnfProjet}}m³</td>
+                                    <td>
+
+                                        <button class="btn custom-button btn-sm mb-2 mr-2" data-toggle="modal"
+                                            data-target="#DonneeTroçons"
+                                            (click)="onOpenMdalToUpdateDonnesTrocons(donnees)"><i
+                                                class="fas fa-pencil-alt"></i> </button>
+                                        <button class="btn custom-button btn-sm mb-2"
+                                            (click)="onDeleteDonnesTrocons(donnees.id)"><i class="fas fa-trash"></i>
+                                        </button>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#Aménagements" role="button" aria-expanded="false"
+                        aria-controls="DonneTroçons">
+                        Aménagements Proposées
+                    </a>
+                </h5>
+                <div class="collapse show" id="Aménagements">
+                    <div class="float-right">
+                        <button class="btn custom-button btn-sm mb-2" (click)="onOpenModalToAddAmenagements()" data-toggle="modal" data-target="#Amenagement"
+                        [disabled]="this.projetId===undefined || this.projetId==='' || this.projetId===null"><i
+                                class="fas fa-plus" ></i> </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>Type</th>
+                                    <th width="40%">Designation</th>
+                                    <th width="40%">Aménagements Proposées</th>
+                                    <th width="8%"></th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of AmenagementsProposes">
+                                    <td>{{data.type}}</td>
+                                    <td>{{data.designation?.description}}</td>
+                                    <td>{{data.amenagement?.description}}</td>
+                                    <td>
+
+                                        <button class="btn custom-button btn-sm mb-2 mr-2" data-toggle="modal"
+                                            data-target="#Amenagement" (click)="onOpenMdalToUpdateAmenagements(data)"><i
+                                                class="fas fa-pencil-alt"></i> </button>
+                                        <button class="btn custom-button btn-sm mb-2"
+                                            (click)="OnDeleteAmmenagements(data.id)"><i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="addAnomalie" tabindex="-1" role="dialog" aria-labelledby="addAnomalie" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAnomalie">{{titlemodelAnomalie}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form -->
+                <form>
+                    <div class="form-group">
+                        <label for="AnomalieSelect">Type Anomalie</label>
+                        <select class="form-select form-control" [(ngModel)]="currentAnomalie.typeAnomalieId"
+                            name="Type">
+                            <option *ngFor="let codes of CodesStandardAnomalie" [value]="codes.id">{{codes.description}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleTextarea">Etat Anomalie</label>
+                        <textarea [(ngModel)]="currentAnomalie.etatAnomalie" name="Etat" class="form-control" id="Etat"
+                            rows="3"></textarea>
+                    </div>
+                    <button *ngIf="buttonTypeAnomalie" type="submit" data-dismiss="modal" (click)="onAddAnomalie()"
+                        class="btn float-right btn-sm custom-button">Ajouter</button>
+                    <button *ngIf="!buttonTypeAnomalie" type="submit" data-dismiss="modal" (click)="onUpdate()"
+                        class="btn float-right btn-sm custom-button">Modifier</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="OuvragesHydrauliques" tabindex="-1" role="dialog" aria-labelledby="OuvragesHydrauliques"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{titlemodelExistingHydraulic}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form -->
+                <form>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Type :</label>
+                            <select class="form-select form-control" [(ngModel)]="currentExistingHydraulic.typeId"
+                                name="Type">
+                                <option *ngFor="let codeOHType of CodesStandardOuvragesTypes" [value]="codeOHType.id">
+                                    {{codeOHType.description}}</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Cordonnées X :</label>
+                            <input type="number" [(ngModel)]="currentExistingHydraulic.coordonneesX" name="CordonneesX"
+                                class="form-control" id="CordonneesX">
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Cordonnées Y :</label>
+                            <input type="number" [(ngModel)]="currentExistingHydraulic.coordonneesY" name="CordonneesY"
+                                class="form-control" id="CordonneesY">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Etat :</label>
+                            <select class="form-select form-control" [(ngModel)]="currentExistingHydraulic.etatIds"
+                                multiple name="Etat">
+                                <option *ngFor="let codeOHEtat of CodesStandardOuvragesEtat" [value]="codeOHEtat.id">
+                                    {{codeOHEtat.description}}</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <button *ngIf="buttonTypeExistingHydraulic" type="submit" data-dismiss="modal"
+                        class="btn btn-primary" (click)="onAddExistingHydraulic()">Ajouter</button>
+                    <button *ngIf="!buttonTypeExistingHydraulic" type="submit" data-dismiss="modal"
+                        class="btn btn-primary" (click)="onUpdateExistingHydraulic()">Modifier</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="DonneeTroçons" tabindex="-1" role="dialog" aria-labelledby="DonneeTroçons"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{titlemodelDonnesTrocon}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form -->
+                <form>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Point de départ :</label>
+                            <input type="text" [(ngModel)]="currentDonnesTrocons.pointDepart" name="StartPoint"
+                                class="form-control" id="StartPoint">
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Point d'arrivée :</label>
+                            <input type="text" [(ngModel)]="currentDonnesTrocons.pointArrivee" name="EndPoint"
+                                class="form-control" id="EndPoint">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Linéiare :</label>
+                            <input type="number" [(ngModel)]="currentDonnesTrocons.lineaire" step="0.01" name="Linieare"
+                                class="form-control" id="Linieare">
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Largeur :</label>
+                            <input type="number" [(ngModel)]="currentDonnesTrocons.largeur" step="0.01" name="Largeur"
+                                class="form-control" id="Largeur">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">GNB à projeter :</label>
+                            <input type="number" [(ngModel)]="currentDonnesTrocons.gnbProjet" step="0.01" name="GNB"
+                                class="form-control" id="GNB">
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">GNF à projeter :</label>
+                            <input type="number" [(ngModel)]="currentDonnesTrocons.gnfProjet" step="0.01" name="GNF"
+                                class="form-control" id="GNF">
+                        </div>
+                    </div>
+                    <button *ngIf="buttonTypeDonnesTrocon" type="submit" data-dismiss="modal"
+                        class="btn btn-sm custom-button float-right" (click)="onAddDonnesTrocons()">Ajouter</button>
+                    <button *ngIf="!buttonTypeDonnesTrocon" type="submit" data-dismiss="modal"
+                        class="btn btn-sm custom-button float-right" (click)="onUpdateDonnesTrocons()">Modifier
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="Amenagement" tabindex="-1" role="dialog" aria-labelledby="Amenagement" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AmenagementTitle">Amenagement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form -->
+                <form>
+                    <div class="form-group">
+                        <label for="TypeAmenagement">Type Aménagement</label>
+                        <select (change)="onSelectChangeAmmenagements()" [(ngModel)]="currentAmenagementsProposes.type"
+                            name="Type" class="form-control" id="Type">
+                            <option value="Ouvrage hydraulique">Ouvrage hydraulique</option>
+                            <option value="Corps de la chaussée">Corps de la chaussée</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Designation">Désignation</label>
+                        <select *ngIf="!typeAmmenagement" [(ngModel)]="currentAmenagementsProposes.designationId"
+                            name="Designation" class="form-control" id="Designation">
+                            <option *ngFor="let designation of Anomalies; let index = index"
+                                value="{{designation.typeAnomalieId}}">
+                                {{index}}-{{formatTypeAnomalie(designation.typeAnomalieId)}}</option>
+                        </select>
+                        <select *ngIf="typeAmmenagement" [(ngModel)]="currentAmenagementsProposes.designationId"
+                            name="Designation" class="form-control" id="Designation">
+                            <option *ngFor="let designation of existingHydraulics; let index = index"
+                                value="{{designation.typeId}}">
+                                {{index}}-{{designation.type.description}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Amenagement_propose">Aménagement Proposées</label>
+                        <select [(ngModel)]="currentAmenagementsProposes.amenagementId" name="codeStandardAmenagement"
+                            class="form-control" id="codeStandardAmenagement">
+                            <option *ngFor="let amenagement of CodesAmenagementsProposes" value="{{amenagement.id}}">
+                                {{amenagement.description}}</option>
+                        </select>
+                    </div>
+                    <button *ngIf="buttonTypeAmenagementsPropose" type="submit" (click)="onAddAmmenagements()"
+                        data-dismiss="modal" class="btn btn-primary">ajouter</button>
+                    <button *ngIf="!buttonTypeAmenagementsPropose" type="submit" (click)="onUpdateAmenagements()"
+                        data-dismiss="modal" class="btn btn-primary">ajouter</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

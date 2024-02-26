@@ -1,0 +1,399 @@
+<div id="Content" class="Content">
+    <div class="container mt-5">
+        <h4> Client : {{client.denomination}}</h4>
+
+        <ul class="nav nav-tabs mb-2" id="myTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab"
+                    aria-controls="general" aria-selected="true">Géneral</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="ZoneEtude-tab" data-toggle="tab" href="#ZoneEtude" role="tab"
+                    aria-controls="ZoneEtude" aria-selected="false">Zone d'étude</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="Projets-tab" data-toggle="tab" href="#Projets" role="tab"
+                    aria-controls="Projets" aria-selected="false">Projets</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabsContent">
+            <!-- Tab 1: Informations générales -->
+            <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                <div class="col-md-12">
+                    <button (click)="saveClient()" *ngIf="editMode"
+                        class="float-right btn custom-button btn-sm mt-2 mb-2"><i
+                            class="fas fa-pencil-alt crayon-icon"></i></button>
+                    <button (click)="saveClient()" *ngIf="!editMode"
+                        class="float-right btn custom-button btn-sm mt-2 mb-2"><i class="fas fa-plus"></i></button>
+                </div>
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#Informations" role="button" aria-expanded="false"
+                        aria-controls="Informations">
+                        Informations générale
+                    </a>
+                </h5>
+                <div class="collapse show" id="Informations">
+                    <div class="card card-body">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="idClient">N° Client :</label>
+                                <input type="text" id="idClient" class="form-control" [(ngModel)]="client.numClient"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Dénomination ">Dénomination :</label>
+                                <input type="text" id="Dénomination " class="form-control"
+                                    [(ngModel)]="client.denomination" [disabled]="isReadonly">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#SectionAdresse" role="button" aria-expanded="false"
+                        aria-controls="SectionAdresse">
+                        Section Adresse et contact
+                    </a>
+                </h5>
+                <div class="collapse show" id="SectionAdresse">
+                    <div class="card card-body mb-3">
+                        <div class="row">
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="Adresse ">Adresse :</label>
+                                <input type="text" id="Adresse " class="form-control" [(ngModel)]="client.adresse"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="Adresse2">Adresse (2ème ligne) :</label>
+                                <input type="text" id="Adresse2" class="form-control"
+                                    [(ngModel)]="client.adresse_2eme_ligne" [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="Pays">Pays :</label>
+                                <input type="text" id="Pays" class="form-control" [(ngModel)]="client.pays"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="province">province :</label>
+                                <input type="text" id="province" class="form-control" [(ngModel)]="client.province"
+                                    [disabled]="isReadonly">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="Ville">Ville :</label>
+                                <input type="text" id="Ville" class="form-control" [(ngModel)]="client.ville"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="Codepostal">Code postal :</label>
+                                <input type="text" id="Codepostal" class="form-control" [(ngModel)]="client.code_postal"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="téléphone">N° téléphone :</label>
+                                <input type="phone" id="téléphone" class="form-control" [(ngModel)]="client.telephone"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="mobile">N° téléphone mobile :</label>
+                                <input type="phone" id="mobile" class="form-control"
+                                    [(ngModel)]="client.telephone_mobile" [disabled]="isReadonly">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="e-mail">Adresse e-mail :</label>
+                                <input type="text" id="e-mail" class="form-control" [(ngModel)]="client.adresse_email"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="PrénomContact">Prénom Contact principal :</label>
+                                <input type="text" id="PrénomContact" class="form-control"
+                                    [(ngModel)]="client.prenom_contact_principal" [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3 col-xs-3">
+                                <label for="NomContact">Nom Contact principal :</label>
+                                <input type="text" id="NomContact" class="form-control"
+                                    [(ngModel)]="client.nom_contact_principal" [disabled]="isReadonly">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Zone d'étude -->
+            <div class="tab-pane fade" id="ZoneEtude" role="tabpanel" aria-labelledby="ZoneEtude-tab">
+                <div class="col-md-12">
+                    <button (click)="saveClient()" *ngIf="editMode"
+                        class="float-right btn custom-button btn-sm mt-2 mb-2"><i
+                            class="fas fa-pencil-alt crayon-icon"></i></button>
+                    <button (click)="saveClient()" *ngIf="!editMode"
+                        class="float-right btn custom-button btn-sm mt-2 mb-2"><i class="fas fa-plus"></i></button>
+                </div>
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#DonnesDeCadrage" role="button" aria-expanded="false"
+                        aria-controls="DonnesDeCadrage">
+                        Données de Cadrage
+                    </a>
+                </h5>
+                <div class="collapse show" id="DonnesDeCadrage">
+                    <div class="card card-body">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="city">Ville :</label>
+                                <input type="text" id="city" class="form-control" [(ngModel)]="client.ville"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Caïdat">Caïdat :</label>
+                                <input type="text" id="Caïdat" class="form-control" [(ngModel)]="zoneEtude.caidat"
+                                    [disabled]="isReadonly">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="chefLieu">Chef-lieu :</label>
+                                <input type="text" id="chefLieu" class="form-control" [(ngModel)]="zoneEtude.chefLieu"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Cercle">Cercle :</label>
+                                <input type="text" id="Cercle" class="form-control" [(ngModel)]="zoneEtude.cercle"
+                                    [disabled]="isReadonly">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- collapse 2: Caractéristiques de la commune -->
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#Caractéristiques" role="button" aria-expanded="false"
+                        aria-controls="Caractéristiques">
+                        Caractéristiques de la commune
+                    </a>
+                </h5>
+                <div class="collapse show" id="Caractéristiques">
+                    <div class="card card-body">
+                        <h6 class="mt-3">Milieu Physique</h6>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="superficie">Superficie totale de la commune :</label>
+                                <div class="input-group">
+                                    <input type="number" id="superficie" class="form-control"
+                                        [(ngModel)]="zoneEtude.superficieTotale" step="0.01" [disabled]="isReadonly">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">km²</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h6 class="mt-3">Délimitation</h6>
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label for="nord">Nord :</label>
+                                <input type="text" id="nord" class="form-control" [(ngModel)]="zoneEtude.nord"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="sud">Sud :</label>
+                                <input type="text" id="sud" class="form-control" [(ngModel)]="zoneEtude.sud"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="est">Est :</label>
+                                <input type="text" id="est" class="form-control" [(ngModel)]="zoneEtude.est"
+                                    [disabled]="isReadonly">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="ouest">Ouest :</label>
+                                <input type="text" id="ouest" class="form-control" [(ngModel)]="zoneEtude.ouest"
+                                    [disabled]="isReadonly">
+                            </div>
+                        </div>
+                        <h6 class="mt-3">Climat</h6>
+                        <div class="row">
+                            <!-- Ajoutez des champs pour Climat ici -->
+                            <div class="form-group col-md-4">
+                                <label for="typeClimat">Type de climat :</label>
+                                <select id="typeClimat" class="form-control" [(ngModel)]="zoneEtude.typeClimat"
+                                    [disabled]="isReadonly">
+                                    <option value="Froid">Froid</option>
+                                    <option value="Tempéré">Tempéré</option>
+                                    <option value="Continental">Continental</option>
+                                    <option value="Tropical">Tropical</option>
+                                    <option value="Désertique">Désertique</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="pluviometrie">Pluviométrie moyenne annuelle :</label>
+                                <div class="input-group">
+                                    <input type="number" id="pluviometrie" class="form-control" step="0.01"
+                                        [(ngModel)]="zoneEtude.pluviometrieMoyenneAnnuelle" [disabled]="isReadonly">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="ventsMoyenne">Vents (Km/h) moyenne annuelle :</label>
+                                <div class="input-group">
+                                    <input type="number" id="ventsMoyenne" class="form-control" step="0.01"
+                                        [(ngModel)]="zoneEtude.ventsKmH" [disabled]="isReadonly">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Km/h</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="tempMin">Température minimale annuelle :</label>
+                                <div class="input-group">
+                                    <input type="number" id="tempMin" class="form-control" step="0.01"
+                                        [(ngModel)]="zoneEtude.temperatureMinimaleAnnuelle" [disabled]="isReadonly">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">°C</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="tempMax">Température maximale annuelle :</label>
+                                <div class="input-group">
+                                    <input type="number" id="tempMax" class="form-control" step="0.01"
+                                        [(ngModel)]="zoneEtude.temperatureMaximaleAnnuelle" [disabled]="isReadonly">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">°C</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="tempMoyenne">Température moyenne annuelle :</label>
+                                <div class="input-group">
+                                    <input type="number" id="tempMoyenne" class="form-control" step="0.01"
+                                        [(ngModel)]="zoneEtude.temperatureMoyenneAnnuelle" [disabled]="isReadonly">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">°C</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6 class="mt-3">Géomorphologie</h6>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="altitudeMax">Altitude maximale :</label>
+                                <div class="input-group">
+                                    <input type="number" id="altitudeMax" class="form-control" step="0.01"
+                                        [(ngModel)]="zoneEtude.altitudeMaximale" [disabled]="isReadonly">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">m</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="altitudeMoyenne">Altitude moyenne :</label>
+                                <div class="input-group">
+                                    <input type="number" id="altitudeMoyenne" class="form-control" step="0.01"
+                                        [(ngModel)]="zoneEtude.altitudeMoyenne" [disabled]="isReadonly">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">m</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="altitudeMin">Altitude minimale :</label>
+                                <div class="input-group">
+                                    <input type="number" id="altitudeMin" class="form-control" step="0.01"
+                                        [(ngModel)]="zoneEtude.altitudeMinimale" [disabled]="isReadonly">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">m</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- collapse 3: Habitat et aménagement -->
+                <h5 class="mt-3">
+                    <a data-toggle="collapse" href="#Habitat" role="button" aria-expanded="false"
+                        aria-controls="Habitat">
+                        Habitat et aménagement
+                    </a>
+                </h5>
+                <div class="collapse" id="Habitat">
+                    <div class="card card-body mb-3">
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <h6 class="mt-3">Etat de concentration de l’habitat</h6>
+                                <!-- État de concentration de l’habitat -->
+
+                                <div class="form-group col-md-12">
+                                    <label for="habitatsGroupes">Nombre d’habitats groupés :</label>
+                                    <div class="input-group">
+                                        <input type="text" id="habitatsGroupes" class="form-control"
+                                            [(ngModel)]="zoneEtude.pourcentageHabitatsGroupes" [disabled]="isReadonly">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="habitatsDisperses">Nombre d’habitats dispersés :</label>
+                                    <div class="input-group">
+                                        <input type="text" id="habitatsDisperses" class="form-control"
+                                            [(ngModel)]="zoneEtude.pourcentageHabitatsDisperses"
+                                            [disabled]="isReadonly">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <h6 class="mt-3">Type de construction</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>Nombre de constructions</th>
+                                                <th>En dure</th>
+                                                <th>En pisé</th>
+                                                <th>autre</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let typecst of typeOfConstructions">
+                                                <th>{{ typecst.name }}</th>
+                                                <td class="text-center">
+                                                    <input type="text" class="input-table text-center" name="Endure"
+                                                        [(ngModel)]="typecst.Endure" [disabled]="isReadonly"
+                                                        (input)="formatInput(typecst, 'Endure')">
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="text" class="input-table text-center" name="Enpise"
+                                                        [(ngModel)]="typecst.Enpise" [disabled]="isReadonly"
+                                                        (input)="formatInput(typecst, 'Enpise')">
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="text" class="input-table text-center" name="Autre"
+                                                        [(ngModel)]="typecst.Autre" [disabled]="isReadonly"
+                                                        (input)="formatInput(typecst, 'Autre')">
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Tab 2: Projets -->
+            <div class="tab-pane fade" id="Projets" role="" tabpanel aria-labelledby="Projets-tab">
+                <app-projet-list *ngIf="ClientId" [clientId]="ClientId"></app-projet-list>
+            </div>
+        </div>
+    </div>
+</div>
